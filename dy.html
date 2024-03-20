@@ -1,0 +1,57 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Video Player from API</title>  
+    <style>  
+        body {  
+            background-color: #f4f4f4; /* 淡灰色背景 */  
+            font-family: Arial, sans-serif; /* 使用无衬线字体 */  
+            color: #333; /* 文字颜色 */  
+            margin: 0;  
+            padding: 20px;  
+            box-sizing: border-box;  
+        } 
+        #myVideo {  
+            width: 100%; /* 视频宽度设置为100% */  
+            height: auto; /* 高度自动以保持比例 */  
+            border-radius: 10px; /* 圆角边框 */  
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 阴影效果 */ 
+        }  
+  
+        /* 针对移动设备屏幕应用样式 */  
+        @media (max-width: 768px) {  
+            #myVideo {  
+                position: fixed; /* 固定定位以覆盖整个屏幕 */  
+                top: 0;  
+                left: 0;  
+                z-index: 9999; /* 确保视频在其它内容之上 */  
+            }  
+        }  
+    </style>  
+    <script>  
+        window.onload = function() {  
+            fetch('https://jkapi.com/api/xjj_video?type=json&apiKey=e2810b0d78dd48fb2e5716f0871d30fc')  
+                .then(response => response.json()) // 解析JSON响应  
+                .then(data => {  
+                    var videoElement = document.getElementById('myVideo');  
+                    videoElement.src = data.video_url; // 假设数据中有video_url字段  
+                    videoElement.muted = false; // 设置视频为静音  
+                    // 尝试自动播放视频，如果需要的话  
+                    videoElement.play()  
+                        .catch(error => {  
+                            console.error('Error playing video:', error);  
+                        }); // 处理播放错误  
+                })  
+                .catch(error => console.error('Error fetching video:', error)); // 处理获取视频错误  
+        };  
+    </script>  
+</head>  
+<body>  
+    <video id="myVideo" controls autoplay muted>  
+        <!-- 如果视频无法加载，则显示此备用内容 -->  
+        <source src="" type="video/mp4">  
+        Your browser does not support the video tag.  
+    </video>  
+</body>  
+</html>
